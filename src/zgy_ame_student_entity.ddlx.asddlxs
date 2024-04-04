@@ -1,0 +1,6 @@
+@Metadata.layer: #CORE
+annotate entity zgy_a_student_entity with
+{
+  @EndUserText.label: 'Öğrenci Durumunu Ayarla'
+  studentstatus;
+}

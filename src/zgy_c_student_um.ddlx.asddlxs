@@ -1,0 +1,69 @@
+@Metadata.layer: #PARTNER
+@UI:
+{
+    headerInfo : {
+                    typeName: 'Student',
+                    typeNamePlural: 'Students',
+                    description: { value: 'Firstname', type: #STANDARD },
+                    title: { type: #STANDARD , label: 'Student', value: 'StudentId'}
+                 }
+}
+annotate view zgy_c_student_um with
+{
+  //object sayfasındaki detaylar
+  @UI.facet: [{ id: 'Student',
+                label: 'Student',
+                purpose: #STANDARD,
+                type: #IDENTIFICATION_REFERENCE,
+                position: 10 },
+
+                { id: 'Results',
+                  label: 'Results',
+                  type: #LINEITEM_REFERENCE,
+                  position: 20,
+                  targetElement: '_results'
+             }]
+
+  @UI: { lineItem: [{ position: 10, label: 'ID'}], //tabloda gösterilecek satır
+         identification: [{ position: 10, label: 'ID'}]}  //detail sayfasında gösterilecek alan
+  Id;
+  @UI: { lineItem: [{ position: 11, label: 'Student ID'}],
+         identification: [{ position: 11, label: 'Student ID' }] }
+  Studentid;
+  @UI: { lineItem: [{ position: 20, label: 'First Name'}],
+         identification: [{ position: 20, label: 'First Name' }] }
+  Firstname;
+  @UI: { lineItem: [{ position: 30, label: 'Last Name'}],
+         identification: [{ position: 30, label: 'Last Name' }] }
+  Lastname;
+  @UI: { lineItem: [{ position: 40, label: 'Student Age'}],
+         identification: [{ position: 40, label: 'Student Age' }] }
+  Studentage;
+  @UI: { lineItem: [{ position: 50, label: 'Course'}],
+         identification: [{ position: 50, label: 'Course' }] }
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'zgy_i_course_um', element: 'Value' },
+                                     additionalBinding: [{ localElement: 'Coursedesc', element: 'Description', usage: #FILTER_AND_RESULT}] }]
+  Course;
+  @UI:{ identification: [{ position: 55, label: 'Course Description' }] }
+  Coursedesc;
+  @UI: { lineItem: [{ position: 60, label: 'Course Duration'}],
+         identification: [{ position: 60, label: 'Course Duration' }] }
+  Courseduration;
+  @UI: { lineItem: [{ position: 70, label: 'Student Status'},
+  { type: #FOR_ACTION, dataAction: 'updateStudentStatus',label: 'Update Info' }],
+         identification: [{ position: 70, label: 'Update Info' } ] }
+  Studentstatus;
+  @UI: { lineItem: [{ position: 80, label: 'Gender'}],
+         identification: [{ position: 80, label: 'Gender' }] }
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'zgy_i_gender_um', element: 'value' },
+                                       distinctValues: true,
+                                       additionalBinding: [{ localElement: 'Genderdesc', element: 'Description', usage: #FILTER_AND_RESULT}] }]
+  Gender;
+  @UI:{ identification: [{ position: 85, label: 'Gender Description' }] }
+  Genderdesc;
+  @UI: { lineItem: [{ position: 90, label: 'Date of Birth'}],
+         identification: [{ position: 90, label: 'Date of Birth'}] }
+  Dob;
+
+}

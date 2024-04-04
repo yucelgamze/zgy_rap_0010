@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Definition for Student Unmanaged'
+define service ZGY_SD_STUDENT_UM {
+  expose zgy_c_student_um as Student;
+  expose zgy_c_results_um as Results;
+}

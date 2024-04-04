@@ -1,0 +1,81 @@
+unmanaged implementation in class zbp_gy_i_student_um unique;
+strict ( 2 );
+
+with draft;
+
+define behavior for zgy_i_student_um alias Student
+draft table zgy_student_d_um
+//late numbering
+early numbering
+lock master
+total etag Locallastchangedat //draft özelliği kullanıldığı için data transferinde
+authorization master ( instance )
+etag master Locallastchangedat
+{
+  create;
+  update ( features : instance );
+  delete ( features : instance );
+  association _results { create; with draft; }
+
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+
+  field ( mandatory ) Firstname, Lastname, Studentage;
+
+  validation validate_fields on save { create; update; }
+
+  determination updateCourseDuration on modify { field Course; }
+  side effects { field Course affects field Courseduration; }   // kayıt verileri girildiği esnada değişimi algılar
+
+  draft determine action Prepare
+  {
+    validation validate_fields;
+    //    determination updateCourseDuration;   //on save
+  }
+
+  field ( readonly ) Id, Coursedesc, Genderdesc, Studentid;
+
+  action updateStudentStatus parameter zgy_a_student_entity result [1] $self;
+
+  mapping for zgy_student_um control zgy_cs_student_prop_um //control str. için mapping
+    {
+      Id                 = id;
+      Studentid          = studentid;
+      Firstname          = firstname;
+      Lastname           = lastname;
+      Studentage         = studentage;
+      Course             = course;
+      Courseduration     = courseduration;
+      Studentstatus      = studentstatus;
+      Gender             = gender;
+      Dob                = dob;
+      Lastchangedat      = lastchangedat;
+      Locallastchangedat = locallastchangedat;
+    }
+}
+
+define behavior for zgy_i_results_um alias Results
+draft table zgy_results_d_um
+//late numbering
+early numbering
+lock dependent by _student
+authorization dependent by _student
+etag dependent by _student
+{
+  update;
+  delete;
+  field ( readonly ) Id;
+  association _student { with draft; }
+
+  field ( readonly ) course_desc, semester_desc, semres_desc;
+
+  mapping for zgy_results_um
+    {
+      Id        = id;
+      Course    = course;
+      Semester  = semester;
+      Semresult = semresult;
+    }
+}
